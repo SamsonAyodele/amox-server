@@ -1,4 +1,4 @@
-// PRODUCT VALIDATION USING JOI
+// USER VALIDATION USING JOI
 const Joi = require("joi");
 
 const userSchema = Joi.object({

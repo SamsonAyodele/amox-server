@@ -1,6 +1,7 @@
 const express = require("express");
 const api = express();
 const sequelize = require("./connection");
+const port = process.env.PORT || 4040
 
 
 api.use(express.json());
@@ -14,7 +15,7 @@ api.get("/", (req, res) => {
 
 
 
-api.listen(4000, async () => {
+api.listen(port, async () => {
     console.log("Api listening on port 4040");
     try {
       // sync all models
