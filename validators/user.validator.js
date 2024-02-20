@@ -8,10 +8,10 @@ const userSchema = Joi.object({
   password: Joi.string().required().min(10),
 });
 
-// const userUpdateSchema = Joi.object({
-//   email: Joi.number(),
-//   password: Joi.string(),
-// });
+const signinSchema = Joi.object({
+  email: Joi.number(),
+  password: Joi.string(),
+});
 
 const validateUserSchema = (data) => {
   const { error, value } = userSchema.validate(data);
@@ -21,4 +21,12 @@ const validateUserSchema = (data) => {
   };
 };
 
-module.exports = { validateUserSchema: validateUserSchema };
+const validatesignSchema = (data) => {
+  const { error, value } = signinSchema.validate(data);
+  return {
+    error: error,
+    value,
+  };
+};
+
+module.exports = { validateUserSchema, validatesignSchema };
