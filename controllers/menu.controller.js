@@ -21,7 +21,7 @@ const createMenu = async (req, res) => {
     }
     const menu = await Menu.create(value);
     return res.status(200).json({
-      message: "menu created succesfully",
+      message: "menu created successfully",
       menu: menu,
     });
   } catch (error) {
@@ -35,7 +35,7 @@ const getAllMenu = async (req, res) => {
   try {
     const menu = await Menu.findAll({});
     return res.status(200).json({
-      message: "succesfull",
+      message: "successfully",
       menu: menu,
     });
   } catch (error) {
@@ -55,7 +55,7 @@ const getMenuById = async (req, res) => {
       });
     } else {
       return res.status(200).json({
-        message: "Menu found succesfully",
+        message: "Menu found successfully",
         menu: menu,
       });
     }
@@ -80,7 +80,7 @@ const updateMenu = async (req, res) => {
       });
     } else {
       return res.status(200).json({
-        message: "Menu updated succesfully",
+        message: "Menu updated successfully",
       });
     }
   } catch (error) {
@@ -104,7 +104,7 @@ const deleteMenu = async (req, res) => {
       });
     } else {
       return res.status(200).json({
-        message: "Menu deleted succesfully",
+        message: "Menu deleted successfully",
       });
     }
   } catch (error) {

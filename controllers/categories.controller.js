@@ -22,7 +22,7 @@ const createCategory = async (req, res) => {
 
     const newCategory = await Categories.create(value);
     return res.status(200).json({
-      message: "categories created succesfully",
+      message: "categories created successfully",
       categories: newCategory,
     });
   } catch (error) {
@@ -36,7 +36,7 @@ const getAllCategories = async (req, res) => {
   try {
     const categories = await Categories.findAll({});
     return res.status(200).json({
-      message: "successfull",
+      message: "successfully",
       categories: categories,
     });
   } catch (error) {
@@ -56,7 +56,7 @@ const getCategoryById = async (req, res) => {
       });
     } else {
       return res.status(200).json({
-        message: "successfull",
+        message: "successfully",
         category: category,
       });
     }
@@ -81,7 +81,7 @@ const updateCategory = async (req, res) => {
       });
     } else {
       return res.status(200).json({
-        message: "Category updated succesfully",
+        message: "Category updated successfully",
         category: category,
       });
     }

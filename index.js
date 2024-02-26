@@ -2,7 +2,7 @@ const express = require("express");
 const api = express();
 const sequelize = require("./connection");
 
-const port = process.env.PORT || 4040;
+const port = process.env.PORT || 4231;
 
 const { signUpUser, signInUser } = require("./controllers/user.controller");
 const {
@@ -48,7 +48,7 @@ api.put("/menu/:menuId", updateMenu);
 api.delete("/menu/:menuId", deleteMenu);
 
 api.listen(port, async () => {
-  console.log("Api listening on port 4040");
+  console.log(`Api listening on port ${port}`);
   try {
     // sync all models
     await sequelize.sync({ alter: true });

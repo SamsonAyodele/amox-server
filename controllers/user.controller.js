@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken");
 
 const {
   validateUserSchema,
-  validatesignSchema,
+  validateSignSchema,
 } = require("../validators/user.validator");
 
 const signUpUser = async (req, res) => {
@@ -30,7 +30,7 @@ const signUpUser = async (req, res) => {
     const token = await user.generateToken;
 
     return res.status(200).json({
-      message: "Account created succesfully",
+      message: "Account created successfully",
       token: token,
     });
   } catch (error) {
@@ -71,7 +71,7 @@ const authenticateUser = async (email, password) => {
 
 const signInUser = async (req, res) => {
   try {
-    const { err } = validatesignSchema(req.body);
+    const { err } = validateSignSchema(req.body);
     if (err) {
       return res.status(400).json({
         message: ërr.detail[0].message,

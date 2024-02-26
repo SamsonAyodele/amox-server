@@ -21,7 +21,7 @@ const validateUserSchema = (data) => {
   };
 };
 
-const validatesignSchema = (data) => {
+const validateSignSchema = (data) => {
   const { error, value } = signinSchema.validate(data);
   return {
     error: error,
@@ -29,4 +29,4 @@ const validatesignSchema = (data) => {
   };
 };
 
-module.exports = { validateUserSchema, validatesignSchema };
+module.exports = { validateUserSchema, validateSignSchema };
