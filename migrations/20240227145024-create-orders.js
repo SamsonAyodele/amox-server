@@ -5,15 +5,72 @@ module.exports = {
     await queryInterface.createTable("orders", {
       id: {
         allowNull: false,
-        autoIncrement: true,
+        // autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
       instructions: {
         type: Sequelize.STRING,
+        allowNull: false,
+      },
+      total: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+      },
+      userId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: "users",
+          key: "id",
+        },
+        allowNull: false,
+      },
+      menuId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: "menus",
+          key: "id",
+        },
+        allowNull: false,
+      },
+      createdAt: {
+        allowNull: false,
+        type: Sequelize.DATE,
+      },
+      updatedAt: {
+        allowNull: false,
+        type: Sequelize.DATE,
+      },
+    });
+
+    await queryInterface.createTable("orderitems", {
+      id: {
+        allowNull: false,
+        autoIncrement: true,
+        primaryKey: true,
+        type: Sequelize.INTEGER,
       },
       price: {
         type: Sequelize.INTEGER,
+        allowNull: false,
+      },
+      quantity: { type: Sequelize.INTEGER, allowNull: false },
+      subTotal: { type: Sequelize.INTEGER, allowNull: false },
+      menuId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: "menus",
+          key: "id",
+        },
+        allowNull: false,
+      },
+      orderId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: "orders",
+          key: "id",
+        },
+        allowNull: false,
       },
       createdAt: {
         allowNull: false,
@@ -25,7 +82,9 @@ module.exports = {
       },
     });
   },
+
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable("orders");
+    await queryInterface.dropTable("orderitems");
   },
 };

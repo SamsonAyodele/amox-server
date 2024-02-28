@@ -9,27 +9,27 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      this.belongsTo(models.Menu);
-      this.belongsTo(models.Customer);
+      // this.belongsTo(models.Menu);
+      // this.belongsTo(models.Customer);
+      this.hasMany(models.OrderItems, { as: orderitems });
     }
   }
   Orders.init(
     {
-      instructions: DataTypes.STRING,
-      price: DataTypes.INTEGER,
-      menuId: {
+      id: {
         type: DataTypes.UUID,
-        references: {
-          menu: "menuId",
-          key: "id",
-        },
+        primaryKey: true,
+        allowNull: false,
       },
-      customerId: {
+      instructions: { type: DataTypes.STRING, allowNull: false },
+      total: { type: DataTypes.INTEGER },
+      userId: {
         type: DataTypes.UUID,
         references: {
-          customer: "customerId",
+          model: "User",
           key: "id",
         },
+        allowNull: false,
       },
       createdAt: {
         type: DataTypes.DATE,
@@ -45,6 +45,20 @@ module.exports = (sequelize, DataTypes) => {
       sequelize,
       modelName: "Orders",
       tableName: "orders",
+      timestamps: true,
+      hooks: {
+        beforeCreate: async (orders) => {
+          const user = await sequelize.models.Menu.findByPk(orders.userId);
+          if (!user) throw new Error("You have to be a user to create order");
+        },
+        afterCreate: async (order) => {
+          const total = order.orderitems.reduce((acc, item) => {
+            return acc + item.price * item.quantity;
+          }, 0);
+          order.total = total;
+          return order.update({ total });
+        },
+      },
     }
   );
   return Orders;

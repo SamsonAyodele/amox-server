@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      this.hasMany(models.Menu);
+      // this.hasMany(models.Menu);
     }
   }
   User.init(
@@ -17,6 +17,7 @@ module.exports = (sequelize, DataTypes) => {
       id: {
         type: DataTypes.UUID,
         primaryKey: true,
+        allowNull: false,
       },
       firstName: {
         type: DataTypes.STRING,

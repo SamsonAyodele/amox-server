@@ -9,8 +9,8 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      this.belongsTo(models.User);
-      this.hasMany(models.Orders);
+      // this.belongsTo(models.User);
+      // this.hasMany(models.Orders);
     }
   }
   Menu.init(
@@ -24,15 +24,16 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       price: {
-        type: DataTypes.NUMBER,
+        type: DataTypes.INTEGER,
         allowNull: false,
       },
       userId: {
         type: DataTypes.UUID,
         references: {
-          user: "userId",
+          model: "User",
           key: "id",
         },
+        allowNull: false,
       },
       createdAt: {
         type: DataTypes.DATE,
