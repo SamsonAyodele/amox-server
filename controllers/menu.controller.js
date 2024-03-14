@@ -1,17 +1,26 @@
-const { Menu } = require("../model/menu.model");
+const { Menu } = require("../models");
+const { User } = require("../models");
+
 const { validateMenuSchema } = require("../validators/menu.validator");
 
 const createMenu = async (req, res) => {
   try {
-    const { err, value } = validateMenuSchema(req.body);
-    if (err) {
+    const { error } = validateMenuSchema(req.body);
+    if (error) {
       return res.status(400).json({
-        message: err.details[0].message,
+        message: error.details[0].message,
+      });
+    }
+    let user = await User.findOne({ where: { id: req.body.userId } });
+    if (!user) {
+      return res.status(400).json({
+        message: "Only user can create menu",
       });
     }
     const menuExist = await Menu.findOne({
       where: {
         name: req.body.name,
+        price: req.body.price,
       },
     });
     if (menuExist) {
@@ -19,14 +28,14 @@ const createMenu = async (req, res) => {
         message: "menu already exist",
       });
     }
-    const menu = await Menu.create(value);
+    const menu = await Menu.create(req.body);
     return res.status(200).json({
       message: "menu created successfully",
       menu: menu,
     });
   } catch (error) {
     return res.status(500).json({
-      message: "server error",
+      errorMessage: error.message,
     });
   }
 };
@@ -40,7 +49,7 @@ const getAllMenu = async (req, res) => {
     });
   } catch (error) {
     return res.status(500).json({
-      message: "server error",
+      message: error.message,
     });
   }
 };
@@ -71,7 +80,7 @@ const updateMenu = async (req, res) => {
     const menuId = req.params.menuId;
     const menu = await Menu.update(req.body, {
       where: {
-        menu: menuId,
+        id: menuId,
       },
     });
     if (!menu) {
@@ -81,11 +90,12 @@ const updateMenu = async (req, res) => {
     } else {
       return res.status(200).json({
         message: "Menu updated successfully",
+        menu: menu,
       });
     }
   } catch (error) {
     return res.status(500).json({
-      message: "server error",
+      errorMessage: error.message,
     });
   }
 };
@@ -95,7 +105,7 @@ const deleteMenu = async (req, res) => {
     const menuId = req.params.menuId;
     const menu = await Menu.destroy(req.body, {
       where: {
-        menu: menuId,
+        id: menuId,
       },
     });
     if (!menu) {
@@ -109,7 +119,7 @@ const deleteMenu = async (req, res) => {
     }
   } catch (error) {
     return res.status(500).json({
-      message: "server error",
+      errorMessage: error.message,
     });
   }
 };

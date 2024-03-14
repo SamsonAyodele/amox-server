@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       // this.belongsTo(models.Menu);
       // this.belongsTo(models.Customer);
-      this.hasMany(models.OrderItems, { as: orderitems });
+      this.hasMany(models.OrderItem, { as: "orderitems" });
     }
   }
   Orders.init(
@@ -20,6 +20,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.UUID,
         primaryKey: true,
         allowNull: false,
+        defaultValue: DataTypes.UUIDV4,
       },
       instructions: { type: DataTypes.STRING, allowNull: false },
       total: { type: DataTypes.INTEGER },
@@ -46,17 +47,18 @@ module.exports = (sequelize, DataTypes) => {
       modelName: "Orders",
       tableName: "orders",
       timestamps: true,
+      paranoid: true,
       hooks: {
         beforeCreate: async (orders) => {
           const user = await sequelize.models.Menu.findByPk(orders.userId);
           if (!user) throw new Error("You have to be a user to create order");
         },
-        afterCreate: async (order) => {
-          const total = order.orderitems.reduce((acc, item) => {
+        afterCreate: async (orders) => {
+          const total = orders.orderitems.reduce((acc, item) => {
             return acc + item.price * item.quantity;
           }, 0);
-          order.total = total;
-          return order.update({ total });
+          orders.total = total;
+          return orders.update({ total });
         },
       },
     }

@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      this.hasMany(models.Orders);
+      // this.hasMany(models.Orders);
     }
   }
   Customer.init(
@@ -17,6 +17,7 @@ module.exports = (sequelize, DataTypes) => {
       id: {
         type: DataTypes.UUID,
         primaryKey: true,
+        defaultValue: DataTypes.UUIDV4,
       },
       firstName: {
         type: DataTypes.STRING,
@@ -34,9 +35,11 @@ module.exports = (sequelize, DataTypes) => {
       },
       createdAt: {
         type: DataTypes.DATE,
+        allowNull: false,
       },
       updatedAt: {
         type: DataTypes.DATE,
+        allowNull: false,
       },
       deletedAt: {
         type: DataTypes.DATE,
@@ -46,6 +49,8 @@ module.exports = (sequelize, DataTypes) => {
       sequelize,
       modelName: "Customer",
       tableName: "customers",
+      timestamps: true,
+      paranoid: true,
     }
   );
   return Customer;

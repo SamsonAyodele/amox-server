@@ -16,8 +16,10 @@ module.exports = (sequelize, DataTypes) => {
   Menu.init(
     {
       id: {
-        type: DataTypes.UUID,
+        type: DataTypes.INTEGER,
         primaryKey: true,
+        autoIncrement: true,
+        // defaultValue: DataTypes.UUIDV4,
       },
       name: {
         type: DataTypes.STRING,
@@ -37,9 +39,11 @@ module.exports = (sequelize, DataTypes) => {
       },
       createdAt: {
         type: DataTypes.DATE,
+        allowNull: false,
       },
       updatedAt: {
         type: DataTypes.DATE,
+        allowNull: false,
       },
       deletedAt: {
         type: DataTypes.DATE,
@@ -49,6 +53,8 @@ module.exports = (sequelize, DataTypes) => {
       sequelize,
       modelName: "Menu",
       tableName: "menus",
+      timestamps: true,
+      paranoid: true,
     }
   );
   return Menu;

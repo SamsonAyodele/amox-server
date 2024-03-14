@@ -18,7 +18,7 @@ module.exports = {
         allowNull: false,
       },
       userId: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUID,
         references: {
           model: "users",
           key: "id",
@@ -34,12 +34,18 @@ module.exports = {
         allowNull: false,
       },
       createdAt: {
-        allowNull: false,
         type: Sequelize.DATE,
+        allowNull: false,
+        defaultValue: Sequelize.DATE,
       },
       updatedAt: {
-        allowNull: false,
         type: Sequelize.DATE,
+        allowNull: false,
+        defaultValue: Sequelize.DATE,
+      },
+      deletedAt: {
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.DATE,
       },
     });
 

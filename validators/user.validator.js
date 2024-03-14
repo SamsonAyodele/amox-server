@@ -4,12 +4,12 @@ const Joi = require("joi");
 const signUpSchema = Joi.object({
   firstName: Joi.string().required(),
   lastName: Joi.string().required(),
-  email: Joi.number().min(0).required(),
-  password: Joi.string().required().min(10),
+  email: Joi.string().required(),
+  password: Joi.string().required(),
 });
 
 const signInSchema = Joi.object({
-  email: Joi.number(),
+  email: Joi.string(),
   password: Joi.string(),
 });
 

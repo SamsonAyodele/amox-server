@@ -5,7 +5,7 @@ module.exports = {
     await queryInterface.createTable("menus", {
       id: {
         allowNull: false,
-        // autoIncrement: true,
+        autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
@@ -18,7 +18,7 @@ module.exports = {
         allowNull: false,
       },
       userId: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUID,
         references: {
           model: "users",
           key: "id",
@@ -26,12 +26,18 @@ module.exports = {
         allowNull: false,
       },
       createdAt: {
-        allowNull: false,
         type: Sequelize.DATE,
+        allowNull: false,
+        defaultValue: Sequelize.DATE,
       },
       updatedAt: {
-        allowNull: false,
         type: Sequelize.DATE,
+        allowNull: false,
+        defaultValue: Sequelize.DATE,
+      },
+      deletedAt: {
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.DATE,
       },
     });
   },

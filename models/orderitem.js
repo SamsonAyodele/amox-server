@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      this.belongsTo(models.Order, { as: "order", foreignKey: "orderId" });
+      this.belongsTo(models.Orders, { as: "order", foreignKey: "orderId" });
     }
   }
   OrderItem.init(
@@ -17,6 +17,7 @@ module.exports = (sequelize, DataTypes) => {
       id: {
         type: DataTypes.UUID,
         primaryKey: true,
+        defaultValue: DataTypes.UUIDV4,
       },
       price: { type: DataTypes.INTEGER, allowNull: false },
       quantity: { type: DataTypes.INTEGER, allowNull: false },
@@ -35,13 +36,15 @@ module.exports = (sequelize, DataTypes) => {
           model: "Order",
           key: "id",
         },
-        allowNull: false,
+        // allowNull: false,
       },
       createdAt: {
         type: DataTypes.DATE,
+        allowNull: false,
       },
       updatedAt: {
         type: DataTypes.DATE,
+        allowNull: false,
       },
       deletedAt: {
         type: DataTypes.DATE,
@@ -52,10 +55,11 @@ module.exports = (sequelize, DataTypes) => {
       modelName: "OrderItem",
       tableName: "orderitems",
       timestamps: true,
+      paranoid: true,
       hooks: {
         beforeCreate: async (orderItem) => {
           const menu = await sequelize.models.Menu.findByPk(orderItem.menuId);
-          if (!menu) throw new Error("Menu no found");
+          if (!menu) throw new Error("Menu not found");
           orderItem.price = menu.price;
           let subTotal = menu.price * orderItem.quantity;
           orderItem.subTotal = subTotal;
