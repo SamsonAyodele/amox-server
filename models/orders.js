@@ -17,10 +17,11 @@ module.exports = (sequelize, DataTypes) => {
   Orders.init(
     {
       id: {
-        type: DataTypes.UUID,
+        type: DataTypes.INTEGER,
         primaryKey: true,
         allowNull: false,
-        defaultValue: DataTypes.UUIDV4,
+        autoIncrement: true,
+        // defaultValue: DataTypes.UUID,
       },
       instructions: { type: DataTypes.STRING, allowNull: false },
       total: { type: DataTypes.INTEGER },
@@ -49,17 +50,24 @@ module.exports = (sequelize, DataTypes) => {
       timestamps: true,
       paranoid: true,
       hooks: {
-        beforeCreate: async (orders) => {
-          const user = await sequelize.models.Menu.findByPk(orders.userId);
+        beforeCreate: async (order) => {
+          const user = await sequelize.models.User.findByPk(order.userId);
           if (!user) throw new Error("You have to be a user to create order");
-        },
-        afterCreate: async (orders) => {
-          const total = orders.orderitems.reduce((acc, item) => {
+          const total = order?.orderitems?.reduce((acc, item) => {
+            // console.log("Item:", item);
+            // console.log("Price:", item.price);
+            // console.log("Quantity:", item.quantity);
             return acc + item.price * item.quantity;
           }, 0);
-          orders.total = total;
-          return orders.update({ total });
+          order.total = total || 0;
         },
+        // afterCreate: async (order) => {
+        //   const total = order?.orderitems?.reduce((acc, item) => {
+        //     return acc + item.price * item.quantity;
+        //   }, 0);
+        //   order.total = total || 0;
+        //   return order.update({ total });
+        // },
       },
     }
   );

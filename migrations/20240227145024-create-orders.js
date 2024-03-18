@@ -5,7 +5,7 @@ module.exports = {
     await queryInterface.createTable("orders", {
       id: {
         allowNull: false,
-        // autoIncrement: true,
+        autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
@@ -25,14 +25,14 @@ module.exports = {
         },
         allowNull: false,
       },
-      menuId: {
-        type: Sequelize.INTEGER,
-        references: {
-          model: "menus",
-          key: "id",
-        },
-        allowNull: false,
-      },
+      // menuId: {
+      //   type: Sequelize.INTEGER,
+      //   references: {
+      //     model: "menus",
+      //     key: "id",
+      //   },
+      //   allowNull: false,
+      // },
       createdAt: {
         type: Sequelize.DATE,
         allowNull: false,
@@ -58,10 +58,10 @@ module.exports = {
       },
       price: {
         type: Sequelize.INTEGER,
-        allowNull: false,
+        // allowNull: false,
       },
       quantity: { type: Sequelize.INTEGER, allowNull: false },
-      subTotal: { type: Sequelize.INTEGER, allowNull: false },
+      subTotal: { type: Sequelize.INTEGER },
       menuId: {
         type: Sequelize.INTEGER,
         references: {

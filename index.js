@@ -4,7 +4,7 @@ const sequelize = require("./connection");
 
 const port = process.env.PORT || 4231;
 
-const { signUpUser, signInUser } = require("./controllers/user.controller");
+const { signUpUser, signInUser, getAllUser } = require("./controllers/user.controller");
 // const {
 //   createCategory,
 //   getAllCategories,
@@ -12,20 +12,8 @@ const { signUpUser, signInUser } = require("./controllers/user.controller");
 //   updateCategory,
 //   deleteCategory,
 // } = require("./controllers/categories.controller");
-const {
-  createMenu,
-  getAllMenu,
-  getMenuById,
-  updateMenu,
-  deleteMenu,
-} = require("./controllers/menu.controller");
-const {
-  createOrder,
-  getAllOrder,
-  getOrderById,
-  updateOrder,
-  deleteOrder,
-} = require("./controllers/order.controller");
+const { createMenu, getAllMenu, getMenuById, updateMenu, deleteMenu } = require("./controllers/menu.controller");
+const { createOrder, getAllOrder, getOrderById, updateOrder, deleteOrder } = require("./controllers/order.controller");
 
 api.use(express.json());
 api.use(express.urlencoded({ extended: true }));
@@ -39,6 +27,7 @@ api.get("/", (req, res) => {
 // AUTHENTICATION
 api.post("/signup", signUpUser);
 api.post("/login", signInUser);
+api.get("/user", getAllUser);
 
 // CATEGORIES CRUD
 // api.post("/categories", createCategory);
@@ -55,10 +44,10 @@ api.put("/menu/:menuId", updateMenu);
 api.delete("/menu/:menuId", deleteMenu);
 
 api.post("/order", createOrder);
-api.get("/menu", getAllOrder);
+api.get("/order", getAllOrder);
 api.get("/order/:orderId", getOrderById);
-api.put("/order/orderId", updateOrder);
-api.delete("/order/orderId", deleteOrder);
+api.put("/order/:orderId", updateOrder);
+api.delete("/order/:orderId", deleteOrder);
 
 api.listen(port, async () => {
   console.log(`Api listening on port ${port}`);

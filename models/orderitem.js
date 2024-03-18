@@ -15,15 +15,17 @@ module.exports = (sequelize, DataTypes) => {
   OrderItem.init(
     {
       id: {
-        type: DataTypes.UUID,
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
         primaryKey: true,
-        defaultValue: DataTypes.UUIDV4,
+        allowNull: false,
+        // defaultValue: DataTypes.UUIDV4,
       },
-      price: { type: DataTypes.INTEGER, allowNull: false },
+      price: { type: DataTypes.INTEGER },
       quantity: { type: DataTypes.INTEGER, allowNull: false },
-      subTotal: { type: DataTypes.INTEGER, allowNull: false },
+      subTotal: { type: DataTypes.INTEGER },
       menuId: {
-        type: DataTypes.UUID,
+        type: DataTypes.INTEGER,
         references: {
           model: "Menu",
           key: "id",

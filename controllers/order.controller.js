@@ -1,29 +1,35 @@
-const { User } = require("../models/user");
-const { Order } = require("../models/orders");
+const { User } = require("../models");
+const { Orders } = require("../models");
 
 const createOrder = async (req, res) => {
   try {
-    let user = await User.findOne({ id: req.body.userId });
+    let user = await User.findOne({
+      where: {
+        id: req.body.userId,
+      },
+    });
     if (!user) {
       return res.status(400).json({
         message: "Only user can create order",
       });
     }
-    const order = await Order.create(req.body, { includes: "orderitems" });
+
+    const order = await Orders.create(req.body, { include: "orderitems" });
     return res.status(200).json({
       message: "Order created successfully",
       order: order,
     });
   } catch (error) {
+    console.log(error);
     return res.status(500).json({
-      message: error.message,
+      errorMessage: error.message,
     });
   }
 };
 
 const getAllOrder = async (req, res) => {
   try {
-    const order = await Order.findAll({});
+    const order = await Orders.findAll({});
     return res.status(200).json({
       message: "Successful",
       order: order,
@@ -37,8 +43,8 @@ const getAllOrder = async (req, res) => {
 
 const getOrderById = async (req, res) => {
   try {
-    const orderId = req.body.orderId;
-    const order = await Order.findByPk(orderId);
+    const orderId = req.params.orderId;
+    const order = await Orders.findByPk(orderId);
     if (!order) {
       return res.status(400).json({
         message: "Order not found",
@@ -58,14 +64,18 @@ const getOrderById = async (req, res) => {
 
 const updateOrder = async (req, res) => {
   try {
-    const orderId = req.body.orderId;
-    const order = await Order.findOne(orderId);
+    const orderId = req.params.orderId;
+    const order = await Orders.findOne({
+      where: {
+        id: orderId,
+      },
+    });
     if (!order) {
       return res.status(400).json({
         message: "Order not found",
       });
     } else {
-      const order = await Order.update(req.body, { where: { order: orderId } });
+      const order = await Orders.update(req.body, { where: { id: orderId } });
       return res.status(200).json({
         message: "Updated successfully",
         order: order,
@@ -80,9 +90,9 @@ const updateOrder = async (req, res) => {
 
 const deleteOrder = async (req, res) => {
   try {
-    const orderId = req.body.orderId;
-    const order = await Order.destroy(req.body, {
-      where: { order: orderId },
+    const orderId = req.params.orderId;
+    const order = await Orders.destroy({
+      where: { id: orderId },
     });
     if (!order) {
       return res.status(400).json({
@@ -91,6 +101,7 @@ const deleteOrder = async (req, res) => {
     }
     return res.status(200).json({
       message: "Order deleted successfully",
+      order: orderId,
     });
   } catch (error) {
     return res.status(500).json({

@@ -103,7 +103,7 @@ const updateMenu = async (req, res) => {
 const deleteMenu = async (req, res) => {
   try {
     const menuId = req.params.menuId;
-    const menu = await Menu.destroy(req.body, {
+    const menu = await Menu.destroy({
       where: {
         id: menuId,
       },

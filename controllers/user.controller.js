@@ -3,10 +3,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 // const sequelize = require("./connection");
 
-const {
-  validateUserSchema,
-  validateSignSchema,
-} = require("../validators/user.validator");
+const { validateUserSchema, validateSignSchema } = require("../validators/user.validator");
 
 const signUpUser = async (req, res) => {
   try {
@@ -124,9 +121,7 @@ const signInUser = async (req, res) => {
     const token = jwt.sign({ email: user.email }, "secretkey", {
       expiresIn: "1h",
     });
-    return res
-      .status(200)
-      .json({ message: "User authenticated successfully", token: token });
+    return res.status(200).json({ message: "User authenticated successfully", token: token });
     // const accessToken = generateAccessToken (user);
     // const refreshToken = generateRefreshToken (user)
   } catch (error) {
@@ -134,4 +129,16 @@ const signInUser = async (req, res) => {
   }
 };
 
-module.exports = { signUpUser, signInUser };
+const getAllUser = async (req, res) => {
+  try {
+    const user = await User.findAll({});
+    return res.status(200).json({
+      message: "Successful",
+      user: user,
+    });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+};
+
+module.exports = { signUpUser, signInUser, getAllUser };
